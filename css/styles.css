@@ -48,6 +48,10 @@ h1 {
   text-decoration: underline;
 }
 
+#show-place h2 {
+  display: inline-block;
+}
+
 
 
 form {
