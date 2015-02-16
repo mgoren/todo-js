@@ -9,7 +9,11 @@ $(document).ready(function() {
 
     var newPlace = { location: location, dates: dates, notes: notes };
 
-    $("ul#places").append("<li id='" + newPlace.location + "'><span class='place'>" + newPlace.location + "</span></li>");
+    var id = $(".place").last().parent().attr('id');
+    if(id === undefined) {id = 0;}
+    id++;
+
+    $("ul#places").append("<li id='" + id + "'><span class='place'>" + newPlace.location + "</span></li>");
 
     $("input#location").val("");
     $("input#dates").val("");
@@ -24,7 +28,7 @@ $(document).ready(function() {
       $(".notes").text(newPlace.notes);
       $(".delete").click(function() {
         $("#show-place").hide();
-        $("li#" + newPlace.location).remove();
+        $("li#" + id).remove();
       });
 
     });
