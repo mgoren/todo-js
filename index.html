@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   <link href="css/styles.css" rel="stylesheet" type="text/css">
   <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src="js/jquery-1.11.2.js"></script>
   <script src="js/scripts.js"></script>
-  <title>Places</title>
+  <title>To Do</title>
 </head>
 <body>
   <div class="container">
-    <h1>Places</h1>
+    <h1>To Do</h1>
 
+<!-- LIST OF ALL LISTS PAGE -->
     <div class="row">
-      <div class="col-md-6">
-        <h2>Add a place:</h2>
-        <form id="new-place">
+      <div class="lists-page col-md-6">
+        <h2>Add a list:</h2>
+        <form id="new-list">
           <div class="form-group">
-            <label for="location">Location name</label>
-            <input type="text" class="form-control" id="location">
+            <label for="list-name">List name</label>
+            <input type="text" class="form-control" id="list-name" required autofocus>
           </div>
-          <div class="form-group">
-            <label for="dates">Dates</label>
-            <input type="text" class="form-control" id="dates">
-          </div>
-          <div class="form-group">
-            <label for="notes">Notes</label>
-            <input type="text" class="form-control" id="notes">
-          </div>
-
           <button type="submit" class="btn">Add</button>
         </form>
 
-        <h2>Places:</h2>
-        <ul id="places">
+        <h2>Lists:</h2>
+        <ul id="lists">
 
         </ul>
       </div>
 
-      <div class="col-md-6">
-        <div id="show-place">
+<!-- TASKS PER LIST PAGE -->
+      <div class="tasks-page col-md-6">
+        <div id="list-tasks">
           <h2></h2><span class="deletable"></span>
-          <p>Dates: <span class="dates"></span></p>
-          <p>Notes: <span class="notes"></span></p>
+          <ul id="tasks">
+
+          </ul>
         </div>
+        <form id="new-task">
+          <div class="form-group">
+            <label for="task-name">Add a Task</label>
+            <input type="text" class="form-control" id="task-name" required>
+          </div>
+          <button type="submit" class="btn">Add</button>
+        </form>
+        <button id="back" class="btn btn-warning"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
       </div>
 
-
     </div>
-
 
   </div>
 </body>

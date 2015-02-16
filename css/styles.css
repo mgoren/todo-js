@@ -35,21 +35,39 @@ h1 {
   margin-left: 33%;
 }
 
-#show-place {
+/*#show-list {
   display: none;
-}
+}*/
 
-.place {
+.list {
   cursor: pointer;
   color: #0088cc;
 }
 
-.place:hover {
+.list:hover {
   text-decoration: underline;
 }
 
-#show-place h2 {
+#list-tasks h2 {
   display: inline-block;
+}
+
+.tasks-page {
+  display: none;
+}
+
+.delete {
+  color: #b00;
+  margin-left: 5px;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.glyphicon-check {
+  color: #090;
 }
 
 

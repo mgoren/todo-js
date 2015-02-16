@@ -1,37 +1,63 @@
 $(document).ready(function() {
-  $("form#new-place").submit(function(event) {
+  var togglePages = function() {
+    $(".lists-page").toggle();
+    $(".tasks-page").toggle();
+  }
+
+
+  $("form#new-list").submit(function(event) {
     event.preventDefault();
-    $("#show-place").hide();
 
-    var location = $("input#location").val();
-    var dates    = $("input#dates").val();
-    var notes    = $("input#notes").val();
-
-    var newPlace = { location: location, dates: dates, notes: notes };
-
-    var id = $(".place").last().parent().attr('id');
-    if(id === undefined) {id = 0;}
-    id++;
-
-    $("ul#places").append("<li id='" + id + "'><span class='place'>" + newPlace.location + "</span></li>");
-
-    $("input#location").val("");
-    $("input#dates").val("");
-    $("input#notes").val("");
+    var listName = $("input#list-name").val();
+    var newList = { listName: listName };
+    $("input#list-name").val("");
     $(".deletable").empty();
 
-    $(".place").last().click(function() {
-      $("#show-place").show();
-      $("#show-place h2").text(newPlace.location);
-      $(".deletable").html("<span class='delete'> [x]</span>");
-      $(".dates").text(newPlace.dates);
-      $(".notes").text(newPlace.notes);
-      $(".delete").click(function() {
-        $("#show-place").hide();
-        $("li#" + id).remove();
-      });
+    var listID = $(".list").last().parent().attr('id');
+    if(listID === undefined) {listID = "list_0";}
+    listID = listID.slice(5);
+    listID++;
 
+    $("ul#lists").append("<li id='list_" + listID + "'><a href='#' class='list'>" + newList.listName + "</a></li>");
+
+    $(".list").last().click(function() {
+      togglePages();
+      $("#list-tasks h2").text(newList.listName);
+      $(".deletable").html(" <span class='delete glyphicon glyphicon-remove-sign'></span>");
+      $(".delete").click(function() {
+        togglePages();
+        $("ul#tasks").empty();
+        $("li#list_" + listID).remove();
+      });
+    });
+  });
+
+
+  $("form#new-task").submit(function(event) {
+    event.preventDefault();
+
+    var taskName = $("input#task-name").val();
+    var newTask = { taskName: taskName };
+    $("input#task-name").val("");
+
+    var taskID = $(".task").last().parent().attr('id');
+    if(taskID === undefined) {taskID = "task_0";}
+    taskID = taskID.slice(5);
+    taskID++;
+
+    $("ul#tasks").append("<li id='task_" + taskID + "'><span class='complete glyphicon glyphicon-unchecked'></span> <span class='task'>" + newTask.taskName + "</span></li>");
+
+    $("ul#tasks li#task_" + taskID).click(function() {
+      $("ul#tasks li#task_" + taskID + " span.complete").toggleClass("glyphicon-unchecked");
+      $("ul#tasks li#task_" + taskID + " span.complete").toggleClass("glyphicon-check");
     });
 
   });
+
+
+  $("#back").click(function() {
+    $("ul#tasks").empty();
+    togglePages();
+  });
+
 });
