@@ -66,6 +66,10 @@ ul {
   list-style-type: none;
 }
 
+[id^="task_"] {
+  cursor: pointer;
+}
+
 .glyphicon-check {
   color: #090;
 }

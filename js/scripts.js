@@ -1,63 +1,91 @@
 $(document).ready(function() {
+
   var togglePages = function() {
     $(".lists-page").toggle();
     $(".tasks-page").toggle();
   }
 
+  var idGenerator = function(ilk) {
+    var id = $("." + ilk).last().parent().attr('id');
+    if(id === undefined) {id = ilk + "_0";}
+    id = id.slice(5);
+    id++;
+    return id;
+  }
 
-  $("form#new-list").submit(function(event) {
+  var changeState = function(task) {
+    $("#tasks #task_" + task.taskID + " .complete").toggleClass("glyphicon-unchecked");
+    $("#tasks #task_" + task.taskID + " .complete").toggleClass("glyphicon-check");
+    task.complete ? task.complete = false : task.complete = true;
+  }
+
+  $("#back").click(function() {
+    $("#tasks").empty();
+    togglePages();
+  });
+
+
+
+// CREATE LIST
+
+  $("#new-list").submit(function(event) {
     event.preventDefault();
 
-    var listName = $("input#list-name").val();
-    var newList = { listName: listName };
-    $("input#list-name").val("");
-    $(".deletable").empty();
+    var listName = $("#list-name").val();
+    var listID = idGenerator("list");
+    var list = { listName: listName, tasks: [], listID: listID };
 
-    var listID = $(".list").last().parent().attr('id');
-    if(listID === undefined) {listID = "list_0";}
-    listID = listID.slice(5);
-    listID++;
-
-    $("ul#lists").append("<li id='list_" + listID + "'><a href='#' class='list'>" + newList.listName + "</a></li>");
+    $("#lists").append("<li id='list_" + listID + "'><a href='#' class='list'>" + list.listName + "</a></li>");
 
     $(".list").last().click(function() {
       togglePages();
-      $("#list-tasks h2").text(newList.listName);
+      $("#list-tasks h2").text(list.listName);
       $(".deletable").html(" <span class='delete glyphicon glyphicon-remove-sign'></span>");
       $(".delete").click(function() {
         togglePages();
-        $("ul#tasks").empty();
-        $("li#list_" + listID).remove();
+        $("#tasks").empty();
+        $("#list_" + listID).remove();
       });
+
+      // list tasks for this list
+      list.tasks.forEach(function(task) {
+        $("#tasks").append("<li id='task_" + task.taskID + "'><span class='complete glyphicon'></span> <span class='task'>" + task.taskName + "</span></li>");
+        if (task.complete) {
+          $("#tasks #task_" + task.taskID + " .complete").addClass("glyphicon-check");
+        } else {
+          $("#tasks #task_" + task.taskID + " .complete").addClass("glyphicon-unchecked");
+        }
+
+        $("#tasks #task_" + task.taskID).click(function() {
+          changeState(task);
+        });
+      });
+
+      // CREATE TASK
+
+      $("#new-task").off(); // Unbind stuff so that form isn't bound to multiple lists simultaneously.
+      $("#new-task").submit(function(event) {
+        event.preventDefault();
+
+        var taskName = $("#task-name").val();
+        var taskID = idGenerator("task");
+        var task = { taskName: taskName, taskID: taskID, complete: false };
+
+        $("#tasks").append("<li id='task_" + taskID + "'><span class='complete glyphicon glyphicon-unchecked'></span> <span class='task'>" + task.taskName + "</span></li>");
+
+        $("#tasks #task_" + taskID).click(function() {
+          changeState(task);
+        });
+
+        $("#task-name").val("");
+
+        list.tasks.push(task);
+      });
+
     });
-  });
 
-
-  $("form#new-task").submit(function(event) {
-    event.preventDefault();
-
-    var taskName = $("input#task-name").val();
-    var newTask = { taskName: taskName };
-    $("input#task-name").val("");
-
-    var taskID = $(".task").last().parent().attr('id');
-    if(taskID === undefined) {taskID = "task_0";}
-    taskID = taskID.slice(5);
-    taskID++;
-
-    $("ul#tasks").append("<li id='task_" + taskID + "'><span class='complete glyphicon glyphicon-unchecked'></span> <span class='task'>" + newTask.taskName + "</span></li>");
-
-    $("ul#tasks li#task_" + taskID).click(function() {
-      $("ul#tasks li#task_" + taskID + " span.complete").toggleClass("glyphicon-unchecked");
-      $("ul#tasks li#task_" + taskID + " span.complete").toggleClass("glyphicon-check");
-    });
-
-  });
-
-
-  $("#back").click(function() {
-    $("ul#tasks").empty();
-    togglePages();
+    $("#list-name").val("");
+    $(".deletable").empty();
   });
 
 });
