@@ -2,6 +2,7 @@ Places
 ======
 
 by Mike Goren & David Zulaica
+(Bootswatch experimentation based on work by Gabe Fince & Luke Chinworth.)
 
 This is a simple javascript application to track places you've been.
 
